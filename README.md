@@ -73,6 +73,12 @@ No installation. No runtime. Just a single executable.
 - 🇬🇧 [Documentation (English)](docs/Documentation.md)
 - 🇷🇺 [Документация (Русский)](docs/Documentation-RU.md)
 
+
+## Comparison
+
+- 🇬🇧 [Comparison (English)](docs/PMinterpolate_vs_AI.md)
+- 🇷🇺 [Сравнение (русский)](docs/PMinterpolate_vs_AI-RU.md)
+
 ---
 
 ## License

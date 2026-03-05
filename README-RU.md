@@ -73,6 +73,11 @@ PMinterpolate.exe "D:\Videos" --fps 120 --passes 2 --lang ru
 - 🇬🇧 [Documentation (English)](docs/Documentation.md)
 - 🇷🇺 [Документация (Русский)](docs/Documentation-RU.md)
 
+## Сравнение
+
+- 🇬🇧 [Comparison (English)](docs/PMinterpolate_vs_AI.md)
+- 🇷🇺 [Сравнение (русский)](docs/PMinterpolate_vs_AI-RU.md)
+
 ---
 
 ## Лицензия
