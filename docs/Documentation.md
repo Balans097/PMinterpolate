@@ -207,7 +207,7 @@ If `--split` is omitted, the number of logical CPU cores is detected automatical
 |---|---|---|---|
 | `-i`, `--inputDir DIR` | `string` | exe directory | Input directory. Alternative to the positional argument. |
 | `--split N` | `int` | CPU core count | Number of parallel chunks. If omitted, detected automatically via `countProcessors()`. |
-| `-o`, `--outputDir NAME` | `string` | `output` | Output directory. Created automatically if it doesn't exist. |
+| `-o`, `--outputDir NAME` | `string` | `<inputDir>/output` | Output directory. Created automatically if it doesn't exist. Defaults to `output/` inside the input directory. |
 | `--fps N` | `int` | `60` | Target frame rate after interpolation. |
 | `--container FORMAT` | `mp4\|mkv` | `mkv` | Output container. MKV is recommended — it supports arbitrary stream types more reliably. |
 | `--passes N` | `1\|2` | `1` | Number of encoding passes. Two-pass mode produces better interpolation quality through motion pre-analysis, but takes twice as long. |
@@ -475,7 +475,7 @@ Full pipeline for a single file: split → interpolation → concat → cleanup.
 
 #### `parseArgs(): Config`
 
-Parses arguments via `std/parseopt` with `mode = LaxMode`. The input directory can be provided either as a positional argument or via `-i` / `--inputDir DIR` — they are mutually exclusive (specifying both causes an error). If `--split` is not provided, `result.split` remains `0` and is replaced by `detectCpuCount()` after parsing.
+Parses arguments via `std/parseopt` with `mode = LaxMode`. The input directory can be provided either as a positional argument or via `-i` / `--inputDir DIR` — they are mutually exclusive (specifying both causes an error). If `--outputDir` is not provided, `outputDir` is set to `inputDir / "output"` after `inputDir` is resolved. If `--split` is not provided, `result.split` remains `0` and is replaced by `detectCpuCount()` after parsing.
 
 #### `main()`
 

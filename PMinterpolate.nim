@@ -415,6 +415,7 @@ proc parseArgs(): Config =
   result = Config(inputDir: "", split: 0, outputDir: "output",
                   fps: 60, container: "mkv", passes: 1, shutdown: false)
 
+  var outputDirSet = false
   let rawArgs = commandLineParams()
 
   for i, arg in rawArgs:
@@ -449,7 +450,7 @@ proc parseArgs(): Config =
           quit(1)
         result.inputDir  = p.val
         positionalsDone  = true
-      of "o", "outputDir": result.outputDir = p.val
+      of "o", "outputDir": result.outputDir = p.val; outputDirSet = true
       of "fps":            result.fps       = parseInt(p.val)
       of "container":
         let v = p.val.toLowerAscii()
@@ -472,6 +473,10 @@ proc parseArgs(): Config =
 
   if not dirExists(result.inputDir):
     stderr.writeLine T(msgErrDirNotFound, result.inputDir); quit(1)
+
+  # If --outputDir was not given explicitly, place output inside inputDir
+  if not outputDirSet:
+    result.outputDir = result.inputDir / "output"
 
   # Auto-detect CPU count if --split was not provided
   if result.split == 0:
