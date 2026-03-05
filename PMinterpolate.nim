@@ -362,6 +362,7 @@ proc processFile(inputVideo: string; cfg: Config) =
 
   echo T(msgStep1)
   runSeq(@["ffmpeg", "-y",
+           "-fflags", "+genpts",
            "-i", absInput,
            "-c", "copy", "-map", "0",
            "-segment_time", partsTime,
