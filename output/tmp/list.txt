@@ -1,0 +1,8 @@
+file '000.60fps.mkv'
+file '001.60fps.mkv'
+file '002.60fps.mkv'
+file '003.60fps.mkv'
+file '004.60fps.mkv'
+file '005.60fps.mkv'
+file '006.60fps.mkv'
+file '007.60fps.mkv'

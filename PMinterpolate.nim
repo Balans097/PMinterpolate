@@ -135,6 +135,8 @@ Arguments:
                           [default: directory of the executable]
 
 Options:
+  -i, --inputDir DIR      directory with media files to process
+                          (alternative to the positional argument)
   --split N               number of parallel chunks
                           [default: number of logical CPU cores]
   -o, --outputDir NAME    output directory          [default: output]
@@ -195,6 +197,8 @@ const RU: array[MsgId, string] = [
                           [по умолчанию: папка с исполняемым файлом]
 
 Параметры:
+  -i, --inputDir ПАПКА    папка с медиафайлами для обработки
+                          (альтернатива позиционному аргументу)
   --split N               количество параллельных фрагментов
                           [по умолчанию: число логических ядер CPU]
   -o, --outputDir ИМЯ     папка вывода               [по умолчанию: output]
@@ -439,6 +443,12 @@ proc parseArgs(): Config =
         let v = parseInt(p.val)
         if v <= 0: stderr.writeLine T(msgErrSplitPositive); quit(1)
         result.split = v
+      of "i", "inputDir":
+        if positionalsDone:
+          stderr.writeLine "Error: inputDir specified both as positional argument and --inputDir flag."
+          quit(1)
+        result.inputDir  = p.val
+        positionalsDone  = true
       of "o", "outputDir": result.outputDir = p.val
       of "fps":            result.fps       = parseInt(p.val)
       of "container":

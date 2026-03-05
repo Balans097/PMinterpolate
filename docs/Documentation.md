@@ -173,11 +173,21 @@ nim c -d:release --opt:speed -d:strip PMinterpolate.nim
 
 ```
 ./PMinterpolate [inputDir] [OPTIONS]
+./PMinterpolate --inputDir DIR [OPTIONS]
 PMinterpolate.exe [inputDir] [OPTIONS]
+PMinterpolate.exe --inputDir DIR [OPTIONS]
 ```
 
 If `inputDir` is omitted, the executable's directory is used.  
 If `--split` is omitted, the number of logical CPU cores is detected automatically.
+
+> **Paths with spaces** — wrap in quotes (handled by the shell, not the program):
+> ```bash
+> ./PMinterpolate "/home/user/My Videos/Clips"
+> ./PMinterpolate --inputDir "/home/user/My Videos/Clips"
+> PMinterpolate.exe "D:\My Videos\Clips"
+> PMinterpolate.exe --inputDir "D:\My Videos\Clips"
+> ```
 
 ---
 
@@ -189,10 +199,13 @@ If `--split` is omitted, the number of logical CPU cores is detected automatical
 |---|---|
 | `inputDir` | Path to the folder containing media files. **Optional.** Defaults to the directory containing `PMinterpolate.exe`. No recursive search. |
 
+> Same path can be passed via `-i` / `--inputDir` instead — both forms are fully equivalent. Specifying both at once is an error.
+
 ### Options
 
 | Option | Type | Default | Description |
 |---|---|---|---|
+| `-i`, `--inputDir DIR` | `string` | exe directory | Input directory. Alternative to the positional argument. |
 | `--split N` | `int` | CPU core count | Number of parallel chunks. If omitted, detected automatically via `countProcessors()`. |
 | `-o`, `--outputDir NAME` | `string` | `output` | Output directory. Created automatically if it doesn't exist. |
 | `--fps N` | `int` | `60` | Target frame rate after interpolation. |
@@ -227,11 +240,18 @@ PMinterpolate.exe
 ### Specify a folder explicitly
 
 ```bash
-# Linux
+# Linux — positional argument
 ./PMinterpolate /mnt/videos/films
+
+# Linux — named flag (equivalent)
+./PMinterpolate --inputDir /mnt/videos/films
+
+# Linux — path with spaces (quotes handled by the shell)
+./PMinterpolate --inputDir "/mnt/videos/My Films"
 
 # Windows
 PMinterpolate.exe "D:\Videos\Films"
+PMinterpolate.exe --inputDir "D:\Videos\Films"
 ```
 
 ### English interface (default)
@@ -455,7 +475,7 @@ Full pipeline for a single file: split → interpolation → concat → cleanup.
 
 #### `parseArgs(): Config`
 
-Parses arguments via `std/parseopt` with `mode = LaxMode`. If `--split` is not provided, `result.split` remains `0` and is replaced by `detectCpuCount()` after parsing.
+Parses arguments via `std/parseopt` with `mode = LaxMode`. The input directory can be provided either as a positional argument or via `-i` / `--inputDir DIR` — they are mutually exclusive (specifying both causes an error). If `--split` is not provided, `result.split` remains `0` and is replaced by `detectCpuCount()` after parsing.
 
 #### `main()`
 

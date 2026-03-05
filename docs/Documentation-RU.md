@@ -172,12 +172,22 @@ nim c -d:release --opt:speed -d:strip PMinterpolate.nim
 ## Использование
 
 ```
-./PMinterpolate [inputDir] [OPTIONS]
-PMinterpolate.exe [inputDir] [OPTIONS]
+./PMinterpolate [inputDir] [ПАРАМЕТРЫ]
+./PMinterpolate --inputDir ПАПКА [ПАРАМЕТРЫ]
+PMinterpolate.exe [inputDir] [ПАРАМЕТРЫ]
+PMinterpolate.exe --inputDir ПАПКА [ПАРАМЕТРЫ]
 ```
 
 Если `inputDir` не указан — используется папка с исполняемым файлом.  
 Если `--split` не указан — используется число логических ядер CPU (определяется автоматически).
+
+> **Пути с пробелами** — заключите путь в кавычки (это функция shell, не программы):
+> ```bash
+> ./PMinterpolate "/home/user/Мои Видео/Клипы"
+> ./PMinterpolate --inputDir "/home/user/Мои Видео/Клипы"
+> PMinterpolate.exe "D:\Мои Видео\Клипы"
+> PMinterpolate.exe --inputDir "D:\Мои Видео\Клипы"
+> ```
 
 ---
 
@@ -189,10 +199,13 @@ PMinterpolate.exe [inputDir] [OPTIONS]
 |---|---|
 | `inputDir` | Путь к папке с медиафайлами. **Необязателен.** Если не указан — используется папка рядом с `PMinterpolate.exe`. Поиск файлов без рекурсии. |
 
+> Тот же путь можно передать через `-i` / `--inputDir` — обе формы полностью эквивалентны. Указывать одновременно оба варианта — ошибка.
+
 ### Опции
 
 | Опция | Тип | По умолчанию | Описание |
 |---|---|---|---|
+| `-i`, `--inputDir ПАПКА` | `string` | папка с exe | Папка с медиафайлами. Альтернатива позиционному аргументу. |
 | `--split N` | `int` | число ядер CPU | Количество частей для параллельной обработки. Если не указан, определяется автоматически через `countProcessors()`. |
 | `-o`, `--outputDir NAME` | `string` | `output` | Директория для итоговых файлов. Создаётся автоматически. |
 | `--fps N` | `int` | `60` | Целевая частота кадров после интерполяции. |
@@ -227,11 +240,18 @@ PMinterpolate.exe
 ### Указать папку явно
 
 ```bash
-# Linux
+# Linux — позиционный аргумент
 ./PMinterpolate /mnt/videos/films
+
+# Linux — именованный флаг (эквивалентно)
+./PMinterpolate --inputDir /mnt/videos/films
+
+# Linux — путь с пробелами (кавычки обрабатывает shell)
+./PMinterpolate --inputDir "/mnt/videos/Мои Фильмы"
 
 # Windows
 PMinterpolate.exe "D:\Videos\Films"
+PMinterpolate.exe --inputDir "D:\Videos\Films"
 ```
 
 ### Английский интерфейс (по умолчанию)
@@ -455,7 +475,7 @@ minterpolate=fps=60:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1
 
 #### `parseArgs(): Config`
 
-Разбирает аргументы через `std/parseopt` с `mode = LaxMode`. Если `--split` не передан, `result.split` остаётся равным `0` и заменяется на `detectCpuCount()` после завершения парсинга.
+Разбирает аргументы через `std/parseopt` с `mode = LaxMode`. Папка с исходными файлами может быть передана как позиционный аргумент или через `-i` / `--inputDir ПАПКА` — оба варианта взаимоисключающие (одновременное указание обоих — ошибка). Если `--split` не передан, `result.split` остаётся равным `0` и заменяется на `detectCpuCount()` после завершения парсинга.
 
 #### `main()`
 
