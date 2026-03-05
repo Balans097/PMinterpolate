@@ -284,10 +284,10 @@ Processed: 3  Skipped: 0
 PMinterpolate.exe --split 4
 ```
 
-### Максимальное качество, ночная обработка
+### Максимальное качество
 
 ```bash
-PMinterpolate.exe "D:\Videos" --fps 60 --passes 2 --shutdown
+PMinterpolate.exe "D:\Videos" --fps 60 --passes 2
 ```
 
 ### Справка
